@@ -1,0 +1,10 @@
+# Ignore .env files in all directories
+**/.env
+
+# Ignore node_modules in all directories
+**/node_modules/
+
+# Other ignored files
+.DS_Store
+dist/
+build/
