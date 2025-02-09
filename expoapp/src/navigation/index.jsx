@@ -25,6 +25,7 @@ import FeesScreen from "../screens/Fees";
 import History from "../screens/History";
 import Membership from "../screens/Membership";
 import ConfirmationScreen from "../screens/ConfirmationScreen";
+import BookingApp from "../screens/BookingApp";
 
 const Stack = createStackNavigator();
 
@@ -70,6 +71,7 @@ const AppNavigation = () => {
       />
       <Stack.Screen name="ProductList" component={ProductList} />
       <Stack.Screen name="CourtBookingApp" component={CourtBookingApp} />
+      <Stack.Screen name="BookingApp" component={BookingApp} />
       <Stack.Screen name="Bookingdetail" component={Bookingdetail} />
       <Stack.Screen name="Gallery" component={Gallery} />
       <Stack.Screen name="FeesScreen" component={FeesScreen} />

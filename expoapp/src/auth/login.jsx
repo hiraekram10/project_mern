@@ -7,8 +7,6 @@
 //   const [lemail,setLemail] = useState('')
 //   const [lpassword,setLpassword] = useState('')
 
-
-  
 //   const handleLogin = async () => {
 //     // if(lemail || lpassword){
 //     //   Alert.alert("please fill all inputs")
@@ -19,25 +17,21 @@
 //       console.log("succesfully logged in");
 //     setLemail('')
 //     setLpassword('')
-      
 
 //     }catch(error){
 //   Alert.alert('authntication error')
 //   console.log(error);
-  
-//     }
-    
-    
-//   };
 
- 
+//     }
+
+//   };
 
 //   return (
 //     <View style={styles.container}>
 //       <View>
 //       <Image style={styles.logo}
 //         source={require('../assets/images/logo.png')} // Replace with the path to your logo
-//       /> 
+//       />
 //       </View>
 //       <Text style={styles.title}>
 //         Login
@@ -45,14 +39,11 @@
 
 //       <View style={styles.inputSec}>
 
-
 //         <TextInput inputMode="email"
 //           keyboardType="email-address"
 //           placeholder="Email address*"
 //           style={styles.input}
 //           onChangeText={(text)=>setLemail(text)}
-
-          
 
 //         ></TextInput>
 //       </View>
@@ -70,7 +61,6 @@
 //         <Text style={styles.textColor}>Forget Password</Text>
 //       </View>
 
-
 //       <View style={styles.linkContainer}>
 
 //         <TouchableOpacity style={styles.btn} onPress={handleLogin}>
@@ -82,15 +72,13 @@
 //         <TouchableOpacity >
 //           <Text style={styles.textColor}>Sign Up</Text>
 //         </TouchableOpacity>
-      
+
 //       </View>
 //     </View>
 //   );
 // };
 
 // export default Login;
-
-
 
 import React, { useState } from "react";
 import {
@@ -102,33 +90,29 @@ import {
   Image,
   Alert,
 } from "react-native";
-import {auth} from './firebaseConfig'
+import { auth } from "./firebaseConfig";
 import { signInWithEmailAndPassword } from "firebase/auth";
 const Login = ({ navigation }) => {
-  const [email,setEmail] = useState('')
-  const [password,setPassword] = useState('')
-
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleLogin = async () => {
-  
-    console.log(navigation.navigate('Home'));
-    
-    try{
-     const userCredenial = await signInWithEmailAndPassword(auth,email,password)
+    // console.log(navigation.navigate("Home"));
+
+    try {
+      const userCredenial = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
+
+      navigation.navigate("Home")
       console.log("succesfully logged in", userCredenial.user);
-    
-   
-
-    }catch(error){
-  Alert.alert('authntication error')
-  console.log(error);
-  
+    } catch (error) {
+      Alert.alert("authntication error");
+      console.log(error);
     }
-    
-    
   };
-
-
 
   return (
     <View style={styles.container}>

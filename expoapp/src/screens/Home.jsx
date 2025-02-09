@@ -19,6 +19,7 @@ const Home = ({ navigation }) => {
         uri: "https://img.freepik.com/free-photo/tennis-player-serving-hall_23-2147821248.jpg?ga=GA1.1.880866563.1733333951&semt=ais_hybrid",
       }, // Using the provided link
       icon: "tennisball-outline",
+      link: "BookingApp",
     },
     {
       title: "Find a History",
@@ -28,7 +29,7 @@ const Home = ({ navigation }) => {
       icon: "tennisball-outline",
     },
     {
-      title: "Find a Membership" ,
+      title: "Find a Membership",
       image: {
         uri: "https://img.freepik.com/free-photo/high-angle-palettes-balls_23-2149459008.jpg?ga=GA1.1.880866563.1733333951&semt=ais_hybrid",
       }, // Replace with another URL or your image
@@ -43,17 +44,15 @@ const Home = ({ navigation }) => {
     },
   ];
 
- useEffect(()=>{
- navigation.setOptions({
-
-  headerLeft: () => (
-    <TouchableOpacity onPress={()=>navigation.openDrawer()}>
-    <Icon name="menu"  style={styles.text} />
-    </TouchableOpacity>
-  ),
-  
- })
- },[navigation])
+  useEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => (
+        <TouchableOpacity onPress={() => navigation.openDrawer()}>
+          <Icon name="menu" style={styles.text} />
+        </TouchableOpacity>
+      ),
+    });
+  }, [navigation]);
 
   return (
     <View style={styles.container}>
@@ -68,12 +67,13 @@ const Home = ({ navigation }) => {
               style={styles.card}
               onPress={() => {
                 // Navigate to the Booking page when the "Find a Court" card is pressed
-                if (card.title === "Find a Court") {
-                  navigation.navigate("CourtBookingApp", {
-                    selectedCourt: card.title,
-                    selectedDate: "2024-12-11", // You can dynamically set the date here
-                  });
-                }
+                // if (card.title === "Find a Court") {
+                //   navigation.navigate("CourtBookingApp", {
+                //     selectedCourt: card.title,
+                //     selectedDate: "2024-12-11", // You can dynamically set the date here
+                //   });
+                // }
+                card?.link && navigation.navigate(card?.link);
               }}
             >
               <ImageBackground
@@ -91,7 +91,7 @@ const Home = ({ navigation }) => {
         </View>
       </ScrollView>
       {/* add here bootm nav */}
-      <Bottomnav/>
+      <Bottomnav />
     </View>
   );
 };
@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
   },
   cardImage: {
     height: 150,
-    color:"#B8EA3F",
+    color: "#B8EA3F",
     justifyContent: "center",
   },
   overlay: {
@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
     borderTopColor: "#ddd",
   },
   navItem: {
-    color:"black",
+    color: "black",
     alignItems: "center",
   },
   navText: {
@@ -156,7 +156,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 25,
-color:"#b8ea3f",
+    color: "#b8ea3f",
     marginLeft: 10,
   },
 });
