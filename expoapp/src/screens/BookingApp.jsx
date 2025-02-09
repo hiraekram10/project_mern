@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { simplybook } from "../api/simplybook";
 
-const BookingApp = ({navigation}) => {
+const BookingApp = ({ navigation }) => {
   const [courts, setCourts] = useState([]);
   const [performers, setPerformers] = useState([]);
   const [person, setPerson] = useState(0);
@@ -25,12 +25,13 @@ const BookingApp = ({navigation}) => {
   }, []);
 
   const handleClick = (item) => {
-      if (!performers?.[0].id || !person) {
+    if (!performers?.[0].id || !person) {
       return;
     }
 
     navigation.navigate("CourtBookingApp", {
       eventId: item.id,
+      name: item.name,
       performerId: performers[0].id,
       count: person,
     });

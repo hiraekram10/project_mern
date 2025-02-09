@@ -12,6 +12,7 @@ export class simplybook {
   static #apikey =
     "62ea24a85ff4af9f76a3cc1debd8656d28037007e9aac170613e15f1500ad860";
   static #company = "padelpuls";
+  static #secretKey = '414a816671fd6cce75f72de0bfeac32a56642f8e82352c49ed845326045affa2'
   static token = null;
   static headers() {
     return {
@@ -32,6 +33,7 @@ export class simplybook {
   }
 
   static async getEventList() {
+    console.log("🚀 ~ simplybook ~ getEventList ~ getEventList:");
     if (!this.token) await this.login();
     const payload = {
       jsonrpc: "2.0",
@@ -99,5 +101,43 @@ export class simplybook {
       headers: this.headers(),
     });
     return status === 200 ? data?.result : [];
+  }
+  static async calculateEndTime(startDateTime, eventId, count, performerId) {
+    if (!this.token) await this.login();
+    const payload = {
+      jsonrpc: "2.0",
+      method: "calculateEndTime",
+      params: [startDateTime, eventId, performerId, count],
+      id: 5,
+    };
+    const { data, status } = await simplybookClient.post("/", payload, {
+      headers: this.headers(),
+    });
+    return status === 200 ? data?.result : [];
+  }
+
+  static async book(eventId, performerId, date, time, clientData, additional, count, batchId, recurringData) {
+    if (!this.token) await this.login();
+
+    const payload = {
+    //   jsonrpc: "2.0",
+      method: "book",
+      params: [eventId, performerId, date, time, clientData, additional, count],
+    //   id: 5,
+    };
+
+    try {
+        console.log("🚀 ~ simplybook ~ book ~ payload:", payload)
+        const { data, status } = await axios.post("https://simplybook.me/api/", payload, {
+          headers: this.headers(),
+        });
+        
+        console.log("🚀 ~ simplybook ~ book ~ data:", data)
+        return status === 200 ? data?.result : [];
+    } catch (error) {
+        console.log("🚀 ~ simplybook ~ book ~ error:", error)
+        
+    }
+  
   }
 }

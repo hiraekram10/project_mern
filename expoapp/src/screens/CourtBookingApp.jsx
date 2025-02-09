@@ -8,21 +8,22 @@ import {
   StyleSheet,
   Modal,
   SafeAreaView,
+  Button,
 } from "react-native";
 import moment from "moment";
 import { simplybook } from "../api/simplybook";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "../auth/firebaseConfig";
 
 const CourtBookingApp = ({ navigation, route }) => {
-  const { eventId, performerId, count } = route.params;
+  const { eventId, performerId, count, name } = route.params;
 
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
+  const [endDateTime, setEndDateTime] = useState(null);
   const [drawerVisible, setDrawerVisible] = useState(false);
   const [timeSlotes, setTimeSlotes] = useState([]);
-  const [courts, setCourts] = useState([
-    { id: 1, name: "Court 1" },
-    { id: 2, name: "Court 2" },
-  ]);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     if (!eventId || !performerId || !Number(count)) {
@@ -32,6 +33,13 @@ const CourtBookingApp = ({ navigation, route }) => {
       .getFirstWorkingDay(performerId)
       .then((res) => setSelectedDate(res));
   }, [eventId]);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
+    return unsubscribe;
+  }, []);
 
   useEffect(() => {
     if (selectedDate) {
@@ -64,40 +72,43 @@ const CourtBookingApp = ({ navigation, route }) => {
 
   const handleTimeSelection = (time) => {
     setSelectedTime(time);
-    setDrawerVisible(true);
+    const startDateTime = `${selectedDate} ${time}`;
+    simplybook
+      .calculateEndTime(startDateTime, eventId, count, performerId)
+      .then((res) => setEndDateTime(res));
   };
 
   const renderTimeslot = (timeslot) => (
     <TouchableOpacity
       key={timeslot}
-      style={[
-        styles.timeslot,
-        timeslot ? styles.availableSlot : styles.unavailableSlot,
-      ]}
-      // disabled={!timeslot.available}
+      style={[styles.timeslot, styles.availableSlot]}
       onPress={() => handleTimeSelection(timeslot)}
     >
-      <Text style={timeslot ? styles.slotText : styles.unavailableText}>
+      <Text style={styles.slotText}>
         {moment(timeslot, "hh:mm:ss").format("hh:mm")}
       </Text>
     </TouchableOpacity>
   );
 
-  const renderCourt = () => (
-    <View style={styles.courtCard}>
-      {/* <Text style={styles.courtName}></Text> */}
-      <FlatList
-        data={timeSlotes}
-        numColumns={4}
-        renderItem={({ item }) => renderTimeslot(item)}
-        // keyExtractor={(item) => `${court.id}-${item.time}`}
-      />
-    </View>
-  );
-
   const handleContinue = () => {
     setDrawerVisible(false);
     navigation.navigate("ProductList", { selectedDate, selectedTime });
+  };
+
+  const handleSubmit = () => {
+
+
+    const clientData = {name: 'Name', email: 'test@gmail.com', phone: '+38099999999',hash: "c339c14fcfffd96bc22ad89814fc1ce9"
+    };
+    simplybook.book(
+      eventId,
+      performerId,
+      selectedDate,
+      selectedTime,
+      {client:clientData},
+      {},
+      count
+    ).then(res => console.log(res));
   };
 
   return (
@@ -139,9 +150,16 @@ const CourtBookingApp = ({ navigation, route }) => {
         ))}
       </ScrollView>
 
-      {/* Courts Section */}
-      <ScrollView style={styles.courtsContainer}>{renderCourt()}</ScrollView>
+      <View style={styles.courtCard}>
+        <Text style={styles.courtName}>{name}</Text>
+        <FlatList
+          data={timeSlotes}
+          numColumns={4}
+          renderItem={({ item }) => renderTimeslot(item)}
+        />
+      </View>
 
+      <Button title="Book" disabled={!endDateTime} onPress={handleSubmit} />
       {/* Drawer (Modal) */}
       <Modal
         visible={drawerVisible}
@@ -201,16 +219,15 @@ const CourtBookingApp = ({ navigation, route }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent : 'flex-start',
-    alignContent:'flex-start',
+    justifyContent: "flex-start",
+    alignContent: "flex-start",
     backgroundColor: "black",
   },
   dateSelector: {
-    flexDirection: "row",
+    maxHeight: 90,
     backgroundColor: "black",
     paddingVertical: 10,
     borderBottomWidth: 1,
-    height:10,
     borderBottomColor: "#ddd",
   },
   dateItem: {
