@@ -14,36 +14,14 @@ import * as Yup from 'yup';
 import axios from 'axios';
 import { auth } from './firebaseConfig.js'
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { getReq } from "../api/axiosapi.js";
-import { useSelector,useDispatch } from "react-redux";
-import { addUser } from "../store/Reducers/UserSlice.js";
+
 
 
 
 
 
 const Register = ({ navigation }) => {
-const state= useSelector((state)=>console.log(state.users))
-console.log(state);
 
-const dispatch=useDispatch()
-
-  
-
-  const getAllusers = async () => {
-    try {
-      const response = await getReq('/users')
-      
-      const data= response?.data
-      console.log("log",response);
-      
-
-    } catch (error) {
-      console.log(error, "error in fetching all users");
-
-    }
-  }
-  getAllusers()
   const [fullName, setFullName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')

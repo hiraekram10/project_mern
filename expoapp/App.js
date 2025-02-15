@@ -164,12 +164,11 @@ import Bookingdetail from "./src/screens/Bookingdetail";
 import AppNavigation from "./src/navigation";
 import AppDrawer from "./src/navigation/drawer";
 import Membership from "./src/screens/Membership";
-import { Provider } from "react-redux";
-import store from "./src/store";
+
 
 const App = () => {
   return (
-  <Provider  store={store}>
+  
     <NavigationContainer>
       {/* <Stack.Navigator initialRouteName="Loginn">
         <Stack.Screen name="Loginn" component={Loginn} options={{ headerShown: false }} />
@@ -184,7 +183,7 @@ const App = () => {
       {/* <AppNavigation/> */}
       <AppDrawer />
     </NavigationContainer>
-    </Provider>
+   
   );
 };
 
