@@ -14,8 +14,9 @@ function BookingWidget() {
     const iframeDocument = iframe.contentDocument || iframe.contentWindow.document; // Access iframe's document
     const sectionToHide = iframeDocument.querySelector('#footer'); // Replace with the section you want to hide
     if (sectionToHide) {
-        sectionToHide.style.display = 'none'; // Hide the section
-    }`;
+        sectionToHide.style.display = 'none'; 
+    }
+        `;
     
     return (
         <View style={{ flex: 1 }}>
